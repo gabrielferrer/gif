@@ -99,18 +99,18 @@ GBOOL M_InitGraphics (HINSTANCE hInst, unsigned int width, unsigned int height) 
 		return GFALSE;
 	}
 
-	g_BI->bmiHeader.biSize          = sizeof (BITMAPINFOHEADER);
-	g_BI->bmiHeader.biWidth         = ScreenWidth;
-	g_BI->bmiHeader.biHeight        = -ScreenHeight;
-	g_BI->bmiHeader.biPlanes        = 1;
-	g_BI->bmiHeader.biBitCount      = 24;
-	g_BI->bmiHeader.biCompression   = BI_RGB;
-	g_BI->bmiHeader.biSizeImage     = 0;
-	g_BI->bmiHeader.biXPelsPerMeter = 0;
-	g_BI->bmiHeader.biYPelsPerMeter = 0;
-	g_BI->bmiHeader.biClrUsed       = 0;
-	g_BI->bmiHeader.biClrImportant  = 0;
-	g_BI->bmiColors[0]              = (RGBQUAD) {0,0,0,0};
+	BI->bmiHeader.biSize          = sizeof (BITMAPINFOHEADER);
+	BI->bmiHeader.biWidth         = ScreenWidth;
+	BI->bmiHeader.biHeight        = -ScreenHeight;
+	BI->bmiHeader.biPlanes        = 1;
+	BI->bmiHeader.biBitCount      = 24;
+	BI->bmiHeader.biCompression   = BI_RGB;
+	BI->bmiHeader.biSizeImage     = 0;
+	BI->bmiHeader.biXPelsPerMeter = 0;
+	BI->bmiHeader.biYPelsPerMeter = 0;
+	BI->bmiHeader.biClrUsed       = 0;
+	BI->bmiHeader.biClrImportant  = 0;
+	BI->bmiColors[0]              = (RGBQUAD) {0,0,0,0};
 
 	if ((DIBSection = CreateDIBSection (hdc, BI, DIB_RGB_COLORS, (void*) &Scene, NULL, 0)) == NULL) {
 		return GFALSE;
@@ -184,7 +184,7 @@ void M_DrawNormal (image_t* image, rgb_t* gct, GBOOL bk, BYTE bkidx, unsigned in
 	rgb_t        c;
 
 	for (i = 0; i < image->height; i++) {
-		v = (y + i) * (3 * g_ScreenWidth + g_FillSamples) + 3 * x;
+		v = (y + i) * (3 * ScreenWidth + FillSamples) + 3 * x;
 
 		for (j = 0; j < image->width; j++) {
 			u = i * image->width + j;
@@ -197,13 +197,13 @@ void M_DrawNormal (image_t* image, rgb_t* gct, GBOOL bk, BYTE bkidx, unsigned in
 			}
 
 			if ((bk && bkidx == k) || !image->transparent || image->trnspindex != k) {
-				g_Scene[v]     = c.blue;
-				g_Scene[v + 1] = c.green;
-				g_Scene[v + 2] = c.red;
+				Scene[v]     = c.blue;
+				Scene[v + 1] = c.green;
+				Scene[v + 2] = c.red;
 			} else {
-				g_Scene[v]     = 0;
-				g_Scene[v + 1] = 0;
-				g_Scene[v + 2] = 0;
+				Scene[v]     = 0;
+				Scene[v + 1] = 0;
+				Scene[v + 2] = 0;
 			}
 
 			v += 3;
