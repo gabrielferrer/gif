@@ -27,6 +27,18 @@ BYTE                                   FillSamples;
 
 FILE*                                  GIFFile;
 
+long GetTick () {
+	if (!QueryPerformanceCounter (&PerformanceCount)) {
+		OS_Exit ("GetTick", "QueryPerformanceCounter");
+	}
+
+	// Convert to microseconds.
+	PerformanceCount.QuadPart *= 1000000;
+	PerformanceCount.QuadPart /= Frequency.QuadPart;
+
+	return (long) PerformanceCount.QuadPart;
+}
+
 LRESULT CALLBACK M_WProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	switch(uMsg) {
 		case WM_DESTROY:
@@ -309,7 +321,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 
 		done          = GFALSE;
 		totaltime     = 0;
-		prevtickcount = SYS_GetTick();
+		prevtickcount = GetTick();
 
 		M_BlankScreen ();
 
@@ -348,7 +360,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 
 			M_Render ();
 
-			tickcount = SYS_GetTick();
+			tickcount = GetTick();
 
 			// Check wrap-around.
 
