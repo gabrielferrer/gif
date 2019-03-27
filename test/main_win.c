@@ -270,15 +270,19 @@ void M_BlankScreen () {
 }
 
 GBOOL M_MoveStreamPointer (long offset) {
-	fpos_t currpos;
+	//long currpos;
+	
+	//if ((currpos = ftell(GIFFile)) == -1) {
+	//	return GFALSE;
+	//}
 
-	if (fgetpos (GIFFile, &currpos) != 0) {
-		return GFALSE;
-	}
+	//currpos += offset;
 
-	currpos += offset;
+	//if (fsetpos (GIFFile, &currpos) != 0) {
+	//	return GFALSE;
+	//}
 
-	if (fsetpos (GIFFile, &currpos) != 0) {
+	if (fseek (GIFFile, offset, SEEK_CUR)) {
 		return GFALSE;
 	}
 
