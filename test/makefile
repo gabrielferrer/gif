@@ -1,10 +1,12 @@
 CC=gcc
-INCLUDE=-I..\include
+INCLUDE=-I..\..\common\system\include -I..\include
 SRCDIR=..\src
+SYSDIR=..\..\common\system\src
 BINDIR=bin
 OBJDIR=obj
 BIN=gif-test
-OBJS="$(OBJ)\main_win.o" "$(OBJ)\buffer.o" "$(OBJ)\gif.o"
+OBJ=main_win.o buffer.o gif.o sys.o
+OBJS=$(OBJDIR)\main_win.o $(OBJDIR)\buffer.o $(OBJDIR)\gif.o $(OBJDIR)\sys.o
 CFLAGS=$(INCLUDE)
 
 ifdef DEBUG
@@ -13,17 +15,20 @@ endif
 
 LDFLAGS=-mwindows
 
-$(BIN): main_win.o buffer.o gif.o
+$(BIN): $(OBJ)
 	$(CC) $(LDFLAGS) $(OBJS) -o "$(BINDIR)\$(BIN)"
 
 main_win.o:
-	$(CC) $(CFLAGS) -c "main_win.c" -o "$(OBJ)\main_win.o"
+	$(CC) $(CFLAGS) -c main_win.c -o "$(OBJDIR)\main_win.o"
 
 buffer.o:
-	$(CC) $(CFLAGS) -c "$(SRCDIR)\buffer.c" -o "$(OBJ)\buffer.o"
+	$(CC) $(CFLAGS) -c "$(SRCDIR)\buffer.c" -o "$(OBJDIR)\buffer.o"
 
 gif.o:
-	$(CC) $(CFLAGS) -c "$(SRCDIR)\gif.c" -o "$(OBJ)\gif.o"
+	$(CC) $(CFLAGS) -c "$(SRCDIR)\gif.c" -o "$(OBJDIR)\gif.o"
+	
+sys.o:
+	$(CC) $(CFLAGS) -c "$(SYSDIR)\sys.c" -o "$(OBJDIR)\sys.o"
 
 clean:
-	del /F /Q "$(OBJ)\*.*" "$(BINDIR)\$(BIN)"
+	del /F /Q "$(OBJDIR)\*.*" "$(BINDIR)\$(BIN)"
