@@ -1,27 +1,29 @@
 CC=gcc
-SRCDIR1=.
-SRCDIR2=../src
-OBJDIR=obj
+INCLUDE=-I..\include
+SRCDIR=..\src
 BINDIR=bin
-BIN=test-gif
-CFLAGS=-I../include
-LDFLAGS=
-SRCS:=$(notdir $(shell find $(SRCDIR1) -name '*.c'))
-SRCS+=$(notdir $(shell find $(SRCDIR2) -name '*.c'))
-OBJS:=$(SRCS:%.c=%.o)
-VPATH=$(SRCDIR1):$(SRCDIR2)
+OBJDIR=obj
+BIN=gif-test
+OBJS="$(OBJ)\main_win.o" "$(OBJ)\buffer.o" "$(OBJ)\gif.o"
+CFLAGS=$(INCLUDE)
 
 ifdef DEBUG
-CFLAGS+=-g -D DEBUG
+CFLAGS+=-g
 endif
 
-$(BIN): $(OBJS)
-	$(CC) $(addprefix $(OBJDIR)/, $(OBJS)) -o $(BINDIR)/$(BIN) $(LDFLAGS)
+LDFLAGS=-mwindows
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$@
+$(BIN): main_win.o buffer.o gif.o
+	$(CC) $(LDFLAGS) $(OBJS) -o "$(BINDIR)\$(BIN)"
 
-.PHONY: clean
+main_win.o:
+	$(CC) $(CFLAGS) -c "main_win.c" -o "$(OBJ)\main_win.o"
+
+buffer.o:
+	$(CC) $(CFLAGS) -c "$(SRCDIR)\buffer.c" -o "$(OBJ)\buffer.o"
+
+gif.o:
+	$(CC) $(CFLAGS) -c "$(SRCDIR)\gif.c" -o "$(OBJ)\gif.o"
+
 clean:
-	rm $(OBJDIR)/*.o $(BINDIR)/$(BIN)
-
+	del /F /Q "$(OBJ)\*.*" "$(BINDIR)\$(BIN)"
