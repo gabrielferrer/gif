@@ -33,7 +33,7 @@ FILE*                                  GIFFile;
 
 long GetTick () {
 	if (!QueryPerformanceCounter (&PerformanceCount)) {
-		OS_Exit ("GetTick", "QueryPerformanceCounter");
+		SYS_Exit ("GetTick", "QueryPerformanceCounter");
 	}
 
 	// Convert to microseconds.
