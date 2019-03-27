@@ -15,6 +15,9 @@ const interlaced_t INTERLACEDDATA[INTERLACEDSTAGES] = {{0, 8}, {4, 8}, {2, 4}, {
 const char* WINCLASSNAME                            = "GIFTEST";
 const char* WINDOWNAME                              = "GIF TEST";
 
+LARGE_INTEGER                          Frequency;
+LARGE_INTEGER                          PerformanceCount;
+
 HINSTANCE                              HInst;
 HWND                                   Hwnd;
 BITMAPINFO*                            BI;
