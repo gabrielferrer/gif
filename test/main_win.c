@@ -84,7 +84,7 @@ GBOOL M_InitGraphics (HINSTANCE hInst, unsigned int width, unsigned int height) 
 	AdjustWindowRect (&r, wStyle, GFALSE);
 
 	if ((Hwnd = CreateWindow (WINCLASSNAME, WINDOWNAME, wStyle, CW_USEDEFAULT, CW_USEDEFAULT, r.right - r.left, r.bottom - r.top, NULL,
-			NULL, g_hInst, NULL)) == NULL) {
+			NULL, HInst, NULL)) == NULL) {
 		return GFALSE;
 	}
 
@@ -95,7 +95,7 @@ GBOOL M_InitGraphics (HINSTANCE hInst, unsigned int width, unsigned int height) 
 		return GFALSE;
 	}
 
-	if ((g_BI = (BITMAPINFO*) malloc (sizeof (BITMAPINFO))) == NULL) {
+	if ((BI = (BITMAPINFO*) malloc (sizeof (BITMAPINFO))) == NULL) {
 		return GFALSE;
 	}
 
@@ -112,17 +112,17 @@ GBOOL M_InitGraphics (HINSTANCE hInst, unsigned int width, unsigned int height) 
 	g_BI->bmiHeader.biClrImportant  = 0;
 	g_BI->bmiColors[0]              = (RGBQUAD) {0,0,0,0};
 
-	if ((g_DIBSection = CreateDIBSection (hdc, g_BI, DIB_RGB_COLORS, (void*) &g_Scene, NULL, 0)) == NULL) {
+	if ((DIBSection = CreateDIBSection (hdc, BI, DIB_RGB_COLORS, (void*) &Scene, NULL, 0)) == NULL) {
 		return GFALSE;
 	}
 
-	ReleaseDC (g_Hwnd, hdc);
+	ReleaseDC (Hwnd, hdc);
 
 	return GTRUE;
 }
 
 void M_CleanUp () {
-	UnregisterClass (WINCLASSNAME, g_hInst);
+	UnregisterClass (WINCLASSNAME, HInst);
 
 	if (Hwnd) {
 		DestroyWindow (Hwnd);
@@ -150,7 +150,7 @@ void M_DrawInterlaced (image_t* image, rgb_t* gct, GBOOL bk, BYTE bkidx, unsigne
 
 	for (p = 0, s = 0; p < INTERLACEDSTAGES; p++) {
 		for (d = INTERLACEDDATA[p].startingrow; d < image->height; d += INTERLACEDDATA[p].increment, s++) {
-			v = (y + d) * (3 * g_ScreenWidth + g_FillSamples) + 3 * x;
+			v = (y + d) * (3 * ScreenWidth + FillSamples) + 3 * x;
 
 			for (j = 0; j < image->width; j++) {
 				u = s * image->width + j;
@@ -163,13 +163,13 @@ void M_DrawInterlaced (image_t* image, rgb_t* gct, GBOOL bk, BYTE bkidx, unsigne
 				}
 
 				if ((bk && bkidx == k) || !image->transparent || image->trnspindex != k) {
-					g_Scene[v]     = c.blue;
-					g_Scene[v + 1] = c.green;
-					g_Scene[v + 2] = c.red;
+					Scene[v]     = c.blue;
+					Scene[v + 1] = c.green;
+					Scene[v + 2] = c.red;
 				} else {
-					g_Scene[v]     = 0;
-					g_Scene[v + 1] = 0;
-					g_Scene[v + 2] = 0;
+					Scene[v]     = 0;
+					Scene[v + 1] = 0;
+					Scene[v + 2] = 0;
 				}
 
 				v += 3;
@@ -206,7 +206,7 @@ void M_DrawNormal (image_t* image, rgb_t* gct, GBOOL bk, BYTE bkidx, unsigned in
 				g_Scene[v + 2] = 0;
 			}
 
-			v + =3;
+			v += 3;
 		}
 	}
 }
@@ -299,7 +299,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 			goto clean2;
 		}
 
-		if (!GIF_ProcessStream (&gif, &read_stream, &move_stream_pointer)) {
+		if (!GIF_ProcessStream (&gif, &M_ReadStream, &M_MoveStreamPointer)) {
 			goto clean;
 		}
 
