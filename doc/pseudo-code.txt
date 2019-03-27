@@ -1,0 +1,45 @@
+The Compression Algorithm
+
+Routine LZW_COMPRESS
+
+PLAIN TEXT
+
+CODE:
+
+   1. STRING = get input character
+   2. WHILE there are still input characters DO
+   3.	CHARACTER = get input character
+   4.	IF STRING+CHARACTER is in the string table then
+   5.		STRING = STRING+character
+   6.	ELSE
+   7.		output the code for STRING
+   8.		add STRING+CHARACTER to the string table
+   9.		STRING = CHARACTER
+  10.	END of IF
+  11.	END of WHILE
+  12.	output the code for STRING
+
+The Modified Decompression Algorithm
+
+Routine LZW_DECOMPRESS
+
+PLAIN TEXT
+
+CODE:
+
+   1. Read OLD_CODE
+   2. output OLD_CODE
+   3. CHARACTER = OLD_CODE
+   4. WHILE there are still input characters DO
+   5.	Read NEW_CODE
+   6.	IF NEW_CODE is not in the translation table THEN
+   7.		STRING = get translation of OLD_CODE
+   8.		STRING = STRING+CHARACTER
+   9. 	ELSE
+  10.		STRING = get translation of NEW_CODE
+  11.	END of IF
+  12.	output STRING
+  13.	CHARACTER = first character in STRING
+  14.	add OLD_CODE + CHARACTER to the translation table
+  15.	OLD_CODE = NEW_CODE
+  16. END of WHILE
