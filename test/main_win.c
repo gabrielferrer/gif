@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <wingdi.h>
 #include <stdio.h>
+#include "sys.h"
 #include "defs.h"
 #include "gif.h"
 
