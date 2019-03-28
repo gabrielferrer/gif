@@ -295,7 +295,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 
 	if (lpszArgument == NULL || strlen (lpszArgument) == 0) {
 		GetModuleFileName(NULL, szFileName, MAX_PATH);
-		printf("Usage: %s <filename>", szFileName);
+		printf("Usage: %s <filename>.\n", szFileName);
 	} else {
 		if ((filename = (char*) malloc (len - 2 + 1)) == NULL) {
 			return -1;
