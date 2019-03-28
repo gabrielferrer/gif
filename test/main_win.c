@@ -286,7 +286,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 	image_t*     i;
 	MSG          msg;
 	GBOOL        done;
-	char*        filename;
+	char*        filename = NULL;
 	unsigned int len;
 	DWORD        tickcount;
 	DWORD        prevtickcount;
