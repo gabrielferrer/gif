@@ -291,12 +291,14 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 	DWORD        tickcount;
 	DWORD        prevtickcount;
 	DWORD        totaltime;
+	TCHAR        szFileName[MAX_PATH];
 
-	if (strcmp (lpszArgument, "test") == 0) {
-		printf("%s", "Usage: test \"filename\"");
+	len = strlen (lpszArgument);
+
+	if (len == 0) {
+		GetModuleFileName(NULL, szFileName, MAX_PATH);
+		printf("%s", "Usage: %s \"filename\"", szFileName);
 	} else {
-		len = strlen (lpszArgument);
-
 		if ((filename = (char*) malloc (len - 2 + 1)) == NULL) {
 			return -1;
 		}
