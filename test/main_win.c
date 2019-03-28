@@ -293,9 +293,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 	DWORD        totaltime;
 	TCHAR        szFileName[MAX_PATH];
 
-	len = strlen (lpszArgument);
-
-	if (len == 0) {
+	if (lpszArgument == NULL || strlen (lpszArgument) == 0) {
 		GetModuleFileName(NULL, szFileName, MAX_PATH);
 		printf("%s", "Usage: %s \"filename\"", szFileName);
 	} else {
