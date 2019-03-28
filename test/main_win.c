@@ -286,7 +286,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 	image_t*     i;
 	MSG          msg;
 	GBOOL        done;
-	char*        filename = NULL;
 	unsigned int len;
 	DWORD        tickcount;
 	DWORD        prevtickcount;
@@ -299,14 +298,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 		GetModuleFileName(NULL, szFileName, MAX_PATH);
 		printf("Usage: %s <filename>.\n", szFileName);
 	} else {
-		if ((filename = (char*) malloc (len + 1)) == NULL) {
-			return -1;
-		}
-
-		strncpy (filename, lpszArgument, len);
-		filename[len] = '\0';
-
-		if ((GIFFile = fopen (filename, "rb")) == NULL) {
+		if ((GIFFile = fopen (lpszArgument, "rb")) == NULL) {
 			goto clean2;
 		}
 
@@ -379,10 +371,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 		fclose (GIFFile);
 	}
 
-	if (filename) {
-		free (filename);
-	}
-
 	M_CleanUp ();
 
 	return 0;
@@ -390,7 +378,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 clean:
 	fclose (GIFFile);
 clean2:
-	free (filename);
 	M_CleanUp ();
 
 	return -1;
