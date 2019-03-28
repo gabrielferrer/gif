@@ -304,7 +304,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 		}
 
 		strncpy (filename, lpszArgument, len);
-		filename[len + 1] = '\0';
+		filename[len] = '\0';
 
 		if ((GIFFile = fopen (filename, "rb")) == NULL) {
 			goto clean2;
@@ -395,4 +395,3 @@ clean2:
 
 	return -1;
 }
-
