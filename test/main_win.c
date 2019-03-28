@@ -293,16 +293,18 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 	DWORD        totaltime;
 	TCHAR        szFileName[MAX_PATH];
 
-	if (lpszArgument == NULL || strlen (lpszArgument) == 0) {
+	len = strlen (lpszArgument);
+
+	if (len == 0) {
 		GetModuleFileName(NULL, szFileName, MAX_PATH);
 		printf("Usage: %s <filename>.\n", szFileName);
 	} else {
-		if ((filename = (char*) malloc (len - 2 + 1)) == NULL) {
+		if ((filename = (char*) malloc (len + 1)) == NULL) {
 			return -1;
 		}
 
-		strncpy (filename, lpszArgument + 1, len - 2);
-		filename[len - 2] = '\0';
+		strncpy (filename, lpszArgument, len);
+		filename[len + 1] = '\0';
 
 		if ((GIFFile = fopen (filename, "rb")) == NULL) {
 			goto clean2;
