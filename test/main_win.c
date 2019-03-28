@@ -373,8 +373,14 @@ int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpsz
 		GIF_FreeGif (gif);
 	}
 
-	fclose (GIFFile);
-	free (filename);
+	if (GIFFile) {
+		fclose (GIFFile);
+	}
+
+	if (filename) {
+		free (filename);
+	}
+
 	M_CleanUp ();
 
 	return 0;
